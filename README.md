@@ -15,9 +15,9 @@ Une fois que l'application est développée, on peut la lancer sur le simulateur
 
 # Exercice 2
 
-La commande `Command` + `R` sert build (run) l'application
-La commande `Command` + `Shift` + `O` sert à rechercher et ouvrir un fichier
-La commande `Ctrl` + `i` sert à reformater le code
-La commande `Command` + `/` sert à commenter le code
+- La commande `Command` + `R` sert build (run) l'application
+- La commande `Command` + `Shift` + `O` sert à rechercher et ouvrir un fichier
+- La commande `Ctrl` + `i` sert à reformater le code
+- La commande `Command` + `/` sert à commenter le code
 
 
