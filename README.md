@@ -20,4 +20,5 @@ Une fois que l'application est développée, on peut la lancer sur le simulateur
 - La commande `Ctrl` + `i` sert à reformater le code
 - La commande `Command` + `/` sert à commenter le code
 
-
+# Exercice 3
+En programmation, une propriété statique (ou variable statique) est une variable qui est associée à la classe plutôt qu'à une instance spécifique de cette classe. Cela signifie qu'une seule copie de la variable existe, indépendamment du nombre d'instances de la classe créées.
