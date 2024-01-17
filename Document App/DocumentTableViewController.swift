@@ -65,20 +65,38 @@ func listFileInBundle() -> [DocumentFile] {
     // Retourne le tableau d'objets DocumentFile
     return documentListBundle
 }
+func copyFileToDocumentsDirectory(fromUrl url: URL) {
+    // On récupère le dossier de l'application, dossier où nous avons le droit d'écrire nos fichiers
+    let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+    
+    // Nous créons une URL de destination pour le fichier
+    let destinationUrl = documentsDirectory.appendingPathComponent(url.lastPathComponent)
+    
+    do {
+        // Puis nous copions le fichier depuis l'URL source vers l'URL de destination
+        try FileManager.default.copyItem(at: url, to: destinationUrl)
+    } catch {
+        print(error)
+    }
+}
 
 
-class DocumentTableViewController: UITableViewController, QLPreviewControllerDataSource {
+class DocumentTableViewController: UITableViewController, QLPreviewControllerDataSource, UIDocumentPickerDelegate {
     var selectedDocumentURL: URL?
+    var listDocuments: [DocumentFile] = []
 
     override func viewDidLoad() {
             super.viewDidLoad()
-
-            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addDocument))
+            listDocuments = listFileInBundle()
+        
+            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(openDocumentPicker))
         }
     
-    @objc func addDocument() {
-        // Code à exécuter lorsque le bouton d'ajout est pressé
-        // Par exemple, ouvrir une vue pour ajouter un nouveau document
+    @objc func openDocumentPicker() {
+        let documentPicker = UIDocumentPickerViewController(forOpeningContentTypes: [.jpeg, .png])
+        documentPicker.delegate = self
+        documentPicker.modalPresentationStyle = .overFullScreen
+        present(documentPicker, animated: true)
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -86,49 +104,59 @@ class DocumentTableViewController: UITableViewController, QLPreviewControllerDat
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return DocumentFile.documents.count
+        return listDocuments.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentCell", for: indexPath)
-
-        let document = DocumentFile.documents[indexPath.row]
-
-        cell.textLabel?.text = document.title
-        cell.detailTextLabel?.text = "Size: \(document.size.formatedSize())"
-
-        return cell
-    }
+         let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentCell", for: indexPath)
+         let document = listDocuments[indexPath.row]
+         cell.textLabel?.text = document.title
+         cell.detailTextLabel?.text = "Size: \(document.size.formatedSize())"
+         return cell
+     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        /*let file = DocumentFile.documents[indexPath.row]
-        selectedDocumentURL = file.url
-        showQLPreviewController()*/
-        
         let previewController = QLPreviewController()
         previewController.dataSource = self
         previewController.currentPreviewItemIndex = indexPath.row
         navigationController?.pushViewController(previewController, animated: true)
     }
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+            guard let selectedUrl = urls.first else { return }
 
-    /*func showQLPreviewController() {
-        guard selectedDocumentURL != nil else {
-            return
+            // Ici, vous traitez le document sélectionné
+            // Par exemple, obtenir le nom du fichier, la taille, etc.
+            do {
+                let resourcesValues = try selectedUrl.resourceValues(forKeys: [.contentTypeKey, .nameKey, .fileSizeKey])
+                let newDocument = DocumentFile(
+                    title: resourcesValues.name!,
+                    size: resourcesValues.fileSize ?? 0,
+                    imageName: nil, // ou définissez un nom d'image si nécessaire
+                    url: selectedUrl,
+                    type: resourcesValues.contentType?.description ?? "Unknown"
+                )
+
+                // Ajouter le nouveau document à la source de données
+                listDocuments.append(newDocument)
+
+                // Mettre à jour la vue tableau
+                tableView.reloadData()
+            } catch {
+                print("Erreur lors de la récupération des informations du document: \(error)")
+            }
+        }
+    
+        func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
+            dismiss(animated: true)
+
         }
 
-        let previewController = QLPreviewController()
-        previewController.dataSource = self
-        navigationController?.pushViewController(previewController, animated: true)
-    }*/
-
-
-    // QLPreviewControllerDataSource methods
     func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
-        return DocumentFile.documents.count
+        return listDocuments.count
     }
 
     func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
-        let document = DocumentFile.documents[index]
+        let document = listDocuments[index]
         return document.url as QLPreviewItem
     }
 }
