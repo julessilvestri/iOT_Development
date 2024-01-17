@@ -13,6 +13,7 @@
 		BA0D7CA92B56D01D00B3B1BE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BA0D7CA72B56D01D00B3B1BE /* Main.storyboard */; };
 		BA0D7CAB2B56D01E00B3B1BE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BA0D7CAA2B56D01E00B3B1BE /* Assets.xcassets */; };
 		BA0D7CAE2B56D01E00B3B1BE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BA0D7CAC2B56D01E00B3B1BE /* LaunchScreen.storyboard */; };
+		BA4B50E82B57B57000299043 /* DocumentTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4B50E72B57B57000299043 /* DocumentTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		BA0D7CAA2B56D01E00B3B1BE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BA0D7CAD2B56D01E00B3B1BE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BA0D7CAF2B56D01E00B3B1BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BA4B50E72B57B57000299043 /* DocumentTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +58,7 @@
 		BA0D7CA02B56D01D00B3B1BE /* Document App */ = {
 			isa = PBXGroup;
 			children = (
+				BA4B50E72B57B57000299043 /* DocumentTableViewController.swift */,
 				BA0D7CA12B56D01D00B3B1BE /* AppDelegate.swift */,
 				BA0D7CA32B56D01D00B3B1BE /* SceneDelegate.swift */,
 				BA0D7CA52B56D01D00B3B1BE /* ViewController.swift */,
@@ -140,6 +143,7 @@
 			files = (
 				BA0D7CA62B56D01D00B3B1BE /* ViewController.swift in Sources */,
 				BA0D7CA22B56D01D00B3B1BE /* AppDelegate.swift in Sources */,
+				BA4B50E82B57B57000299043 /* DocumentTableViewController.swift in Sources */,
 				BA0D7CA42B56D01D00B3B1BE /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
