@@ -71,7 +71,14 @@ class DocumentTableViewController: UITableViewController, QLPreviewControllerDat
     var selectedDocumentURL: URL?
 
     override func viewDidLoad() {
-        super.viewDidLoad()
+            super.viewDidLoad()
+
+            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addDocument))
+        }
+    
+    @objc func addDocument() {
+        // Code à exécuter lorsque le bouton d'ajout est pressé
+        // Par exemple, ouvrir une vue pour ajouter un nouveau document
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
