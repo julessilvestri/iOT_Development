@@ -62,33 +62,18 @@ func listFileInBundle() -> [DocumentFile] {
         }
     }
     
-    // Retourne le tableau d'objets DocumentFile
     return documentListBundle
 }
-func copyFileToDocumentsDirectory(fromUrl url: URL) {
-    // On récupère le dossier de l'application, dossier où nous avons le droit d'écrire nos fichiers
-    let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-    
-    // Nous créons une URL de destination pour le fichier
-    let destinationUrl = documentsDirectory.appendingPathComponent(url.lastPathComponent)
-    
-    do {
-        // Puis nous copions le fichier depuis l'URL source vers l'URL de destination
-        try FileManager.default.copyItem(at: url, to: destinationUrl)
-    } catch {
-        print(error)
-    }
-}
-
-
 class DocumentTableViewController: UITableViewController, QLPreviewControllerDataSource, UIDocumentPickerDelegate {
     var selectedDocumentURL: URL?
     var listDocuments: [DocumentFile] = []
 
     override func viewDidLoad() {
             super.viewDidLoad()
-            listDocuments = listFileInBundle()
-        
+            let bundleDocuments = listFileInBundle()
+            let appDocuments = listFilesInDocumentsDirectory()
+            listDocuments = bundleDocuments + appDocuments
+
             navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(openDocumentPicker))
         }
     
@@ -123,32 +108,21 @@ class DocumentTableViewController: UITableViewController, QLPreviewControllerDat
     }
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
             guard let selectedUrl = urls.first else { return }
-
-            // Ici, vous traitez le document sélectionné
-            // Par exemple, obtenir le nom du fichier, la taille, etc.
             do {
                 let resourcesValues = try selectedUrl.resourceValues(forKeys: [.contentTypeKey, .nameKey, .fileSizeKey])
                 let newDocument = DocumentFile(
                     title: resourcesValues.name!,
                     size: resourcesValues.fileSize ?? 0,
-                    imageName: nil, // ou définissez un nom d'image si nécessaire
+                    imageName: nil,
                     url: selectedUrl,
                     type: resourcesValues.contentType?.description ?? "Unknown"
                 )
-
-                // Ajouter le nouveau document à la source de données
                 listDocuments.append(newDocument)
-
-                // Mettre à jour la vue tableau
                 tableView.reloadData()
+                copyFileToDocumentsDirectory(fromUrl: selectedUrl)
             } catch {
                 print("Erreur lors de la récupération des informations du document: \(error)")
             }
-        }
-    
-        func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
-            dismiss(animated: true)
-
         }
 
     func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
@@ -159,5 +133,38 @@ class DocumentTableViewController: UITableViewController, QLPreviewControllerDat
         let document = listDocuments[index]
         return document.url as QLPreviewItem
     }
+    func listFilesInDocumentsDirectory() -> [DocumentFile] {
+        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        
+        do {
+            let fileURLs = try FileManager.default.contentsOfDirectory(at: documentsDirectory, includingPropertiesForKeys: nil)
+            let documentFiles = fileURLs.map { fileURL in
+                let resourcesValues = try! fileURL.resourceValues(forKeys: [.contentTypeKey, .nameKey, .fileSizeKey])
+                return DocumentFile(
+                    title: resourcesValues.name!,
+                    size: resourcesValues.fileSize ?? 0,
+                    imageName: fileURL.lastPathComponent,
+                    url: fileURL,
+                    type: resourcesValues.contentType?.description ?? "Unknown"
+                )
+            }
+            return documentFiles
+        } catch {
+            print("Error reading files from documents directory: \(error)")
+            return []
+        }
+    }
+    
+    func copyFileToDocumentsDirectory(fromUrl url: URL) {
+            let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+            
+            let destinationUrl = documentsDirectory.appendingPathComponent(url.lastPathComponent)
+            
+            do {
+                try FileManager.default.copyItem(at: url, to: destinationUrl)
+            } catch {
+                print(error)
+            }
+        }
 }
 
