@@ -14,7 +14,7 @@ struct DocumentFile {
     var url: URL
     var type: String
     
-    static var testDocuments: [DocumentFile] {
+    static var documents: [DocumentFile] {
         return listFileInBundle()
     }
 }
@@ -87,19 +87,36 @@ class DocumentTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // Return the number of rows in the section, which is the count of test documents
-        return DocumentFile.testDocuments.count
+        return DocumentFile.documents.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentCell", for: indexPath)
-                
-        let document = DocumentFile.testDocuments[indexPath.row]
+        
+        let document = DocumentFile.documents[indexPath.row]
         
         cell.textLabel?.text = document.title
         cell.detailTextLabel?.text = "Size: \(document.size.formatedSize())"
         
         return cell
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Vérifie si sender est UITableViewCell et si l'index path peut être récupéré
+        if let cell = sender as? UITableViewCell, let indexPath = tableView.indexPath(for: cell) {
+            
+            // Vérifie si destination du segue est instance de DocumentViewController
+            if let documentViewController = segue.destination as? DocumentViewController {
+                
+                // Récupérer document correspondant à index
+                let selectedDocument = DocumentFile.documents[indexPath.row]
+                
+                // Assigner nom au DocumentViewController
+                documentViewController.imageName = selectedDocument.imageName
+            }
+        }
+    }
+
     
     
     
