@@ -14,6 +14,12 @@
 		BA0D7CAB2B56D01E00B3B1BE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BA0D7CAA2B56D01E00B3B1BE /* Assets.xcassets */; };
 		BA0D7CAE2B56D01E00B3B1BE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BA0D7CAC2B56D01E00B3B1BE /* LaunchScreen.storyboard */; };
 		BA4B50E82B57B57000299043 /* DocumentTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4B50E72B57B57000299043 /* DocumentTableViewController.swift */; };
+		BA4B50FB2B57C3CF00299043 /* janosch-diggelmann-igwUXojj66c-unsplash.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BA4B50F62B57C3CF00299043 /* janosch-diggelmann-igwUXojj66c-unsplash.jpg */; };
+		BA4B50FC2B57C3CF00299043 /* charlesdeluvio-Mv9hjnEUHR4-unsplash.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BA4B50F72B57C3CF00299043 /* charlesdeluvio-Mv9hjnEUHR4-unsplash.jpg */; };
+		BA4B50FD2B57C3CF00299043 /* janosch-diggelmann-zxJ20zYAD0s-unsplash.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BA4B50F82B57C3CF00299043 /* janosch-diggelmann-zxJ20zYAD0s-unsplash.jpg */; };
+		BA4B50FE2B57C3CF00299043 /* neom-4AADxUsnufQ-unsplash.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BA4B50F92B57C3CF00299043 /* neom-4AADxUsnufQ-unsplash.jpg */; };
+		BA4B50FF2B57C3CF00299043 /* vaclav-pechar-w_S4156HjSE-unsplash.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BA4B50FA2B57C3CF00299043 /* vaclav-pechar-w_S4156HjSE-unsplash.jpg */; };
+		BA4B51012B57CBF900299043 /* DocumentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4B51002B57CBF900299043 /* DocumentViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +32,12 @@
 		BA0D7CAD2B56D01E00B3B1BE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BA0D7CAF2B56D01E00B3B1BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BA4B50E72B57B57000299043 /* DocumentTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentTableViewController.swift; sourceTree = "<group>"; };
+		BA4B50F62B57C3CF00299043 /* janosch-diggelmann-igwUXojj66c-unsplash.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "janosch-diggelmann-igwUXojj66c-unsplash.jpg"; path = "Document App/Assets.xcassets/janosch-diggelmann-igwUXojj66c-unsplash.jpg"; sourceTree = SOURCE_ROOT; };
+		BA4B50F72B57C3CF00299043 /* charlesdeluvio-Mv9hjnEUHR4-unsplash.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "charlesdeluvio-Mv9hjnEUHR4-unsplash.jpg"; path = "Document App/Assets.xcassets/charlesdeluvio-Mv9hjnEUHR4-unsplash.jpg"; sourceTree = SOURCE_ROOT; };
+		BA4B50F82B57C3CF00299043 /* janosch-diggelmann-zxJ20zYAD0s-unsplash.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "janosch-diggelmann-zxJ20zYAD0s-unsplash.jpg"; path = "Document App/Assets.xcassets/janosch-diggelmann-zxJ20zYAD0s-unsplash.jpg"; sourceTree = SOURCE_ROOT; };
+		BA4B50F92B57C3CF00299043 /* neom-4AADxUsnufQ-unsplash.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "neom-4AADxUsnufQ-unsplash.jpg"; path = "Document App/Assets.xcassets/neom-4AADxUsnufQ-unsplash.jpg"; sourceTree = SOURCE_ROOT; };
+		BA4B50FA2B57C3CF00299043 /* vaclav-pechar-w_S4156HjSE-unsplash.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "vaclav-pechar-w_S4156HjSE-unsplash.jpg"; path = "Document App/Assets.xcassets/vaclav-pechar-w_S4156HjSE-unsplash.jpg"; sourceTree = SOURCE_ROOT; };
+		BA4B51002B57CBF900299043 /* DocumentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +70,7 @@
 		BA0D7CA02B56D01D00B3B1BE /* Document App */ = {
 			isa = PBXGroup;
 			children = (
+				BA4B50F52B57C3AF00299043 /* docAssets */,
 				BA4B50E72B57B57000299043 /* DocumentTableViewController.swift */,
 				BA0D7CA12B56D01D00B3B1BE /* AppDelegate.swift */,
 				BA0D7CA32B56D01D00B3B1BE /* SceneDelegate.swift */,
@@ -66,8 +79,21 @@
 				BA0D7CAA2B56D01E00B3B1BE /* Assets.xcassets */,
 				BA0D7CAC2B56D01E00B3B1BE /* LaunchScreen.storyboard */,
 				BA0D7CAF2B56D01E00B3B1BE /* Info.plist */,
+				BA4B51002B57CBF900299043 /* DocumentViewController.swift */,
 			);
 			path = "Document App";
+			sourceTree = "<group>";
+		};
+		BA4B50F52B57C3AF00299043 /* docAssets */ = {
+			isa = PBXGroup;
+			children = (
+				BA4B50F72B57C3CF00299043 /* charlesdeluvio-Mv9hjnEUHR4-unsplash.jpg */,
+				BA4B50F62B57C3CF00299043 /* janosch-diggelmann-igwUXojj66c-unsplash.jpg */,
+				BA4B50F82B57C3CF00299043 /* janosch-diggelmann-zxJ20zYAD0s-unsplash.jpg */,
+				BA4B50F92B57C3CF00299043 /* neom-4AADxUsnufQ-unsplash.jpg */,
+				BA4B50FA2B57C3CF00299043 /* vaclav-pechar-w_S4156HjSE-unsplash.jpg */,
+			);
+			path = docAssets;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -128,8 +154,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BA4B50FE2B57C3CF00299043 /* neom-4AADxUsnufQ-unsplash.jpg in Resources */,
+				BA4B50FC2B57C3CF00299043 /* charlesdeluvio-Mv9hjnEUHR4-unsplash.jpg in Resources */,
 				BA0D7CAE2B56D01E00B3B1BE /* LaunchScreen.storyboard in Resources */,
+				BA4B50FB2B57C3CF00299043 /* janosch-diggelmann-igwUXojj66c-unsplash.jpg in Resources */,
 				BA0D7CAB2B56D01E00B3B1BE /* Assets.xcassets in Resources */,
+				BA4B50FF2B57C3CF00299043 /* vaclav-pechar-w_S4156HjSE-unsplash.jpg in Resources */,
+				BA4B50FD2B57C3CF00299043 /* janosch-diggelmann-zxJ20zYAD0s-unsplash.jpg in Resources */,
 				BA0D7CA92B56D01D00B3B1BE /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -141,6 +172,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BA4B51012B57CBF900299043 /* DocumentViewController.swift in Sources */,
 				BA0D7CA62B56D01D00B3B1BE /* ViewController.swift in Sources */,
 				BA0D7CA22B56D01D00B3B1BE /* AppDelegate.swift in Sources */,
 				BA4B50E82B57B57000299043 /* DocumentTableViewController.swift in Sources */,
