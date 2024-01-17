@@ -72,8 +72,6 @@ class DocumentTableViewController: UITableViewController, QLPreviewControllerDat
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "DocumentCell")
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -96,12 +94,17 @@ class DocumentTableViewController: UITableViewController, QLPreviewControllerDat
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let file = DocumentFile.documents[indexPath.row]
+        /*let file = DocumentFile.documents[indexPath.row]
         selectedDocumentURL = file.url
-        showQLPreviewController()
+        showQLPreviewController()*/
+        
+        let previewController = QLPreviewController()
+        previewController.dataSource = self
+        previewController.currentPreviewItemIndex = indexPath.row
+        navigationController?.pushViewController(previewController, animated: true)
     }
 
-    func showQLPreviewController() {
+    /*func showQLPreviewController() {
         guard selectedDocumentURL != nil else {
             return
         }
@@ -109,16 +112,17 @@ class DocumentTableViewController: UITableViewController, QLPreviewControllerDat
         let previewController = QLPreviewController()
         previewController.dataSource = self
         navigationController?.pushViewController(previewController, animated: true)
-    }
+    }*/
 
 
     // QLPreviewControllerDataSource methods
     func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
-        return 3
+        return DocumentFile.documents.count
     }
 
     func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
-        return selectedDocumentURL! as QLPreviewItem
+        let document = DocumentFile.documents[index]
+        return document.url as QLPreviewItem
     }
 }
 
