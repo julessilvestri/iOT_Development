@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import QuickLook
 
 struct DocumentFile {
     var title: String
@@ -66,7 +67,9 @@ func listFileInBundle() -> [DocumentFile] {
 }
 
 
-class DocumentTableViewController: UITableViewController {
+class DocumentTableViewController: UITableViewController, QLPreviewControllerDataSource {
+    
+    var selectedDocumentURL: URL?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -76,6 +79,8 @@ class DocumentTableViewController: UITableViewController {
         
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "DocumentCell")
     }
     
     // MARK: - Table view data source
@@ -91,32 +96,51 @@ class DocumentTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentCell", for: indexPath)
-        
+        let cellIdentifier = "DocumentCell"
+
+        // Use dequeueReusableCell(withIdentifier:for:) to ensure a valid cell is returned
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
+
         let document = DocumentFile.documents[indexPath.row]
-        
+
+        // Set the cell style to .subtitle
         cell.textLabel?.text = document.title
         cell.detailTextLabel?.text = "Size: \(document.size.formatedSize())"
-        
+        cell.detailTextLabel?.numberOfLines = 0  // Use this line if you want multiline detail text
+
         return cell
     }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Vérifie si sender est UITableViewCell et si l'index path peut être récupéré
-        if let cell = sender as? UITableViewCell, let indexPath = tableView.indexPath(for: cell) {
-            
-            // Vérifie si destination du segue est instance de DocumentViewController
-            if let documentViewController = segue.destination as? DocumentViewController {
-                
-                // Récupérer document correspondant à index
-                let selectedDocument = DocumentFile.documents[indexPath.row]
-                
-                // Assigner nom au DocumentViewController
-                documentViewController.imageName = selectedDocument.imageName
-            }
-        }
-    }
 
+    
+    /*override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Vérifie si sender est UITableViewCell et si l'index path peut être récupéré
+     if let cell = sender as? UITableViewCell, let indexPath = tableView.indexPath(for: cell) {
+     
+     // Vérifie si destination du segue est instance de DocumentViewController
+     if let documentViewController = segue.destination as? DocumentViewController {
+     
+     // Récupérer document correspondant à index
+     let selectedDocument = DocumentFile.documents[indexPath.row]
+     
+     // Assigner nom au DocumentViewController
+     documentViewController.imageName = selectedDocument.imageName
+     }
+     }
+     }*/
+    
+    
+    func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
+        return selectedDocumentURL != nil ? 1 : 0
+    }
+    
+    func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
+        return selectedDocumentURL! as QLPreviewItem
+    }
+    
+    // Ajouter cette méthode pour résoudre le problème
+    func previewController(_ controller: QLPreviewController, titleForPreviewItemAt index: Int) -> String? {
+        return selectedDocumentURL?.lastPathComponent
+    }
     
     
     
