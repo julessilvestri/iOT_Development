@@ -67,37 +67,34 @@ func listFileInBundle() -> [DocumentFile] {
 }
 
 
-class DocumentTableViewController: UITableViewController {
+class DocumentTableViewController: UITableViewController, QLPreviewControllerDataSource {
     var selectedDocumentURL: URL?
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "DocumentCell")
     }
-    
-    // MARK: - Table view data source
-    
+
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // Return the number of sections (in this case, just one section)
         return 1
     }
-    
+
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // Return the number of rows in the section, which is the count of test documents
         return DocumentFile.documents.count
     }
-    
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentCell", for: indexPath)
-            
-            let document = DocumentFile.documents[indexPath.row]
-            
-            cell.textLabel?.text = document.title
-            cell.detailTextLabel?.text = "Size: \(document.size.formatedSize())"
-            
-            return cell
-        }
+        let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentCell", for: indexPath)
+
+        let document = DocumentFile.documents[indexPath.row]
+
+        cell.textLabel?.text = document.title
+        cell.detailTextLabel?.text = "Size: \(document.size.formatedSize())"
+
+        return cell
+    }
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let file = DocumentFile.documents[indexPath.row]
         selectedDocumentURL = file.url
@@ -105,7 +102,7 @@ class DocumentTableViewController: UITableViewController {
     }
 
     func showQLPreviewController() {
-        guard let documentURL = selectedDocumentURL else {
+        guard selectedDocumentURL != nil else {
             return
         }
 
@@ -113,14 +110,15 @@ class DocumentTableViewController: UITableViewController {
         previewController.dataSource = self
         navigationController?.pushViewController(previewController, animated: true)
     }
-}
-extension DocumentTableViewController: QLPreviewControllerDataSource {
 
+
+    // QLPreviewControllerDataSource methods
     func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
-        return 1
+        return 3
     }
 
     func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
         return selectedDocumentURL! as QLPreviewItem
     }
 }
+
