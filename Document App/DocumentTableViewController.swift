@@ -30,6 +30,12 @@ struct DocumentFile {
     }
 }
 
+extension Int {
+    func formatedSize() -> String {
+        return ByteCountFormatter.string(fromByteCount: Int64(self), countStyle: .file)
+    }
+}
+
 class DocumentTableViewController: UITableViewController {
 
     override func viewDidLoad() {
@@ -60,7 +66,7 @@ class DocumentTableViewController: UITableViewController {
         let document = DocumentFile.testDocuments[indexPath.row]
 
         cell.textLabel?.text = document.title
-        cell.detailTextLabel?.text = "Size: \(document.size) bytes"
+        cell.detailTextLabel?.text = "Size: \(document.size.formatedSize())"
 
         return cell
     }
