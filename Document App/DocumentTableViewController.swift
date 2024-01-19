@@ -20,6 +20,11 @@ struct DocumentFile {
     }
 }
 
+struct Section {
+    var title: String
+    var docArray: [DocumentFile]
+}
+
 extension Int {
     func formatedSize() -> String {
         return ByteCountFormatter.string(fromByteCount: Int64(self), countStyle: .file)
@@ -64,10 +69,12 @@ func listFileInBundle() -> [DocumentFile] {
     
     return documentListBundle
 }
+
 class DocumentTableViewController: UITableViewController, QLPreviewControllerDataSource, UIDocumentPickerDelegate, UISearchResultsUpdating {
     var selectedDocumentURL: URL?
     var bundleDocuments: [DocumentFile] = []
     var importedDocuments: [DocumentFile] = []
+    var sections: [Section] = []
     let searchController = UISearchController(searchResultsController: nil)
     var filteredImportedDocuments: [DocumentFile] = []
     var filteredBundleDocuments: [DocumentFile] = []
@@ -89,32 +96,35 @@ class DocumentTableViewController: UITableViewController, QLPreviewControllerDat
             return documentCopy
         }
         
+        sections.append(Section(title: "Bundle", docArray: bundleDocuments))
+        sections.append(Section(title: "Importés", docArray: importedDocuments))
+        
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(openDocumentPicker))
         
         searchController.searchResultsUpdater = self
-                searchController.obscuresBackgroundDuringPresentation = false
-                searchController.searchBar.placeholder = "Search Documents"
-                navigationItem.searchController = searchController
-                definesPresentationContext = true
-                
-                // Configurez la barre de défilement
-                tableView.showsVerticalScrollIndicator = true
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search Documents"
+        navigationItem.searchController = searchController
+        definesPresentationContext = true
+        
+        // Configurez la barre de défilement
+        tableView.showsVerticalScrollIndicator = true
     }
     func updateSearchResults(for searchController: UISearchController) {
-            guard let searchText = searchController.searchBar.text else { return }
-            
-            // Filtrer les documents en fonction du texte de recherche
-            filteredImportedDocuments = importedDocuments.filter { document in
-                return document.title.lowercased().contains(searchText.lowercased())
-            }
-            
-            filteredBundleDocuments = bundleDocuments.filter { document in
-                return document.title.lowercased().contains(searchText.lowercased())
-            }
-            
-            // Mettez à jour la table view avec les résultats filtrés
-            tableView.reloadData()
+        guard let searchText = searchController.searchBar.text else { return }
+        
+        // Filtrer les documents en fonction du texte de recherche
+        filteredImportedDocuments = importedDocuments.filter { document in
+            return document.title.lowercased().contains(searchText.lowercased())
         }
+        
+        filteredBundleDocuments = bundleDocuments.filter { document in
+            return document.title.lowercased().contains(searchText.lowercased())
+        }
+        
+        // Mettez à jour la table view avec les résultats filtrés
+        tableView.reloadData()
+    }
     
     @objc func openDocumentPicker() {
         let documentPicker = UIDocumentPickerViewController(forOpeningContentTypes: [.jpeg, .png])
@@ -124,64 +134,34 @@ class DocumentTableViewController: UITableViewController, QLPreviewControllerDat
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return sections.count
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        switch section {
-        case 0:
-            return "Importés"
-        case 1:
-            return "Bundle"
-        default:
-            return nil
-        }
+        return sections[section].title
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-            switch section {
-            case 0:
-                return searchController.isActive ? filteredImportedDocuments.count : importedDocuments.count
-            case 1:
-                return searchController.isActive ? filteredBundleDocuments.count : bundleDocuments.count
-            default:
-                return 0
-            }
-        }
+        return sections[section].docArray.count
+    }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentCell", for: indexPath)
-            
-            switch indexPath.section {
-            case 0:
-                let document = searchController.isActive ? filteredImportedDocuments[indexPath.row] : importedDocuments[indexPath.row]
-                cell.textLabel?.text = document.title
-                cell.detailTextLabel?.text = "Taille : \(document.size.formatedSize())"
-            case 1:
-                let document = searchController.isActive ? filteredBundleDocuments[indexPath.row] : bundleDocuments[indexPath.row]
-                cell.textLabel?.text = document.title
-                cell.detailTextLabel?.text = "Taille : \(document.size.formatedSize())"
-            default:
-                break
-            }
-            
-            return cell
-        }
+        let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentCell", for: indexPath)
+        
+        let document = sections[indexPath.section].docArray[indexPath.row]
+        
+        cell.textLabel?.text = document.title
+        cell.detailTextLabel?.text = document.size.formatedSize()
+        
+        return cell
+    }
+    
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let previewController = QLPreviewController()
-        
-        switch indexPath.section {
-        case 0:
-            previewController.dataSource = self
-            previewController.currentPreviewItemIndex = indexPath.row
-            navigationController?.pushViewController(previewController, animated: true)
-        case 1:
-            // Handle bundle document selection as needed
-            break
-        default:
-            break
-        }
+        previewController.dataSource = self
+        previewController.currentPreviewItemIndex = indexPath.row
+        navigationController?.pushViewController(previewController, animated: true)
     }
     
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
@@ -204,13 +184,27 @@ class DocumentTableViewController: UITableViewController, QLPreviewControllerDat
     }
     
     func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
-        return importedDocuments.count
+        var nombreItem = 0
+        for section in sections {
+            nombreItem = nombreItem + section.docArray.count
+        }
+        return nombreItem
     }
     
     func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
-        let document = importedDocuments[index]
+        
+        if (sections[section].title == "Bundle"){
+            sectionIndex = 0
+        } else {
+            sectionIndex = 1
+        }
+        
+        let document = sections[sectionIndex].docArray[index]
+        
         return document.url as QLPreviewItem
     }
+    
+    
     func listFilesInDocumentsDirectory() -> [DocumentFile] {
         let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         
