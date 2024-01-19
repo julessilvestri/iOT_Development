@@ -26,3 +26,9 @@ En programmation, une propriété statique est une variable qui est associée à
 Question :  Expliquer pourquoi dequeueReusableCell est important pour les performances de l’application.
 
 Car elle réutilise la cellule créer précedement et permet de ne pas gérer les celulles situé hors de l'écran, c'est une question de performance.
+
+Les segues sont des connecteurs visuels entre les contrôleurs de vue dans vos storyboards, affichés sous forme de lignes entre les deux contrôleurs. Ils vous permettent de présenter un contrôleur de vue à partir d'un autre, en utilisant éventuellement une présentation adaptative afin que les iPad se comportent d'une manière tandis que les iPhones se comportent d'une autre.
+
+Une contrainte définit comment les éléments d'une interface sont disposés. Elle est essentielle pour la mise en page. AutoLayout utilise ces contraintes pour permettre à une interface de s'ajuster automatiquement à différentes tailles d'écran.
+
+Ce serait mieux d'utiliser un disclosureIndicator plutôt qu'un info button pour les cellules, car le disclosureIndicator est conçu pour indiquer une hiérarchie et permettre la navigation vers des niveaux inférieurs, ce qui est plus adapté si il y a des sous-vues à explorer dans les listes ou tableaux. L'info button est destiné à révéler des détails spécifiques sans support de navigation hiérarchique.
